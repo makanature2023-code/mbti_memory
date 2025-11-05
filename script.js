@@ -295,6 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function generateCard(userImg) {
 
+                canvas.style.backgroundColor = '#FDFBF7'; // Explicitly set canvas background style
+
                 // Set canvas dimensions (9:16 aspect ratio)
 
                 canvas.width = 750;
@@ -543,6 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const link = document.createElement('a');
         link.download = 'My_Taean_Scent_Card.jpg'; // Changed to .jpg
         link.href = canvas.toDataURL('image/jpeg', 0.9); // Changed to image/jpeg
+        console.log('Saved card data URL:', link.href);
         link.click();
     }
 
