@@ -319,477 +319,244 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 
 
-                                ctx.fillStyle = '#B0E0E6'; // Changed to a more vibrant pastel blue
+                ctx.fillStyle = '#D0E0F0'; // Changed to a lighter blue
 
-                
-
-                                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                
-
-                        
-
-                
-
-                                // --- Global Vertical Shift ---
-
-                
-
-                                const topMargin = 60; // Increase this value to move everything down
-
-                
-
-                                ctx.translate(0, topMargin);
-
-                
-
-                        
-
-                
-
-                                // --- 2. Draw User's Photo in a Circle ---
-
-                
-
-                                ctx.save(); // Save the current state
-
-                
-
-                                const circle = {
-
-                
-
-                                    x: canvas.width / 2,
-
-                
-
-                                    y: 400, // Base Y position
-
-                
-
-                                    radius: 200
-
-                
-
-                                };
-
-                
-
-                                ctx.beginPath();
-
-                
-
-                                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
-
-                
-
-                                ctx.closePath();
-
-                
-
-                                ctx.clip(); // Create a circular clipping path
-
-                
-
-                        
-
-                
-
-                                // ... (The rest of the photo drawing logic is the same) ...
-
-                
-
-                                const userAspect = userImg.width / userImg.height;
-
-                
-
-                                const circleAspect = 1;
-
-                
-
-                                let sx, sy, sWidth, sHeight;
-
-                
-
-                                if (userAspect > circleAspect) {
-
-                
-
-                                    sHeight = userImg.height;
-
-                
-
-                                    sWidth = sHeight;
-
-                
-
-                                    sx = (userImg.width - sWidth) / 2;
-
-                
-
-                                    sy = 0;
-
-                
-
-                                } else {
-
-                
-
-                                    sWidth = userImg.width;
-
-                
-
-                                    sHeight = sWidth;
-
-                
-
-                                    sx = 0;
-
-                
-
-                                    sy = (userImg.height - sHeight) / 2;
-
-                
-
-                                }
-
-                
-
-                                ctx.drawImage(userImg, sx, sy, sWidth, sHeight, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
-
-                
-
-                                ctx.beginPath();
-
-                
-
-                                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
-
-                
-
-                                ctx.lineWidth = 10;
-
-                
-
-                                ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
-
-                
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                                ctx.stroke();
+        
 
-                
-
-                                ctx.restore();
-
-                
-
-                        
-
-                
-
-                                // --- 3. Draw Logo Text ---
-
-                
-
-                                ctx.fillStyle = '#003f5c'; // Company brand color
-
-                
-
-                                ctx.font = 'bold 80px Inter, Noto Sans KR';
-
-                
-
-                                ctx.textAlign = 'center';
-
-                
-
-                                ctx.fillText('T8', canvas.width / 2, 120);
-
-                
-
-                                ctx.font = '50px Inter, Noto Sans KR';
-
-                
-
-                                ctx.fillText('AROMA', canvas.width / 2, 180);
-
-                
-
-                        
-
-                
-
-                                // --- 4. Draw MBTI & Scent Text ---
-
-                
-
-                                const mbtiResult = mbtiTypeDisplay.textContent;
-
-                
-
-                                const finalScentName = scentName.textContent;
-
-                
-
-                                const scentDescriptionText = scentDescription.textContent;
-
-                
-
-                        
-
-                
-
-                                ctx.fillStyle = '#003f5c'; // Unify color to brand color
-
-                
-
-                                ctx.textAlign = 'center';
-
-                
-
-                                
-
-                
-
-                                // --- Decorative Lines ---
-
-                
+                // --- Global Vertical Shift ---
 
-                                const lineY = circle.y + circle.radius + 60;
+                const topMargin = 60; // Increase this value to move everything down
 
-                
-
-                                ctx.fillStyle = '#D3CFC4'; // A soft, elegant color for the lines
-
-                
+                ctx.translate(0, topMargin);
 
-                                ctx.fillRect(canvas.width / 2 - 150, lineY, 300, 1); // Line above MBTI
+        
 
-                
+                // --- 2. Draw User's Photo in a Circle ---
 
-                        
+                ctx.save(); // Save the current state
 
-                
+                const circle = {
 
-                                ctx.fillStyle = '#003f5c'; // Unify color to brand color
+                    x: canvas.width / 2,
 
-                
+                    y: 400, // Base Y position
 
-                                ctx.font = 'bold 90px Noto Sans KR'; // Reduced font size
+                    radius: 200
 
-                
+                };
 
-                                ctx.fillText(mbtiResult, canvas.width / 2, lineY + 100);
+                ctx.beginPath();
 
-                
+                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
 
-                        
+                ctx.closePath();
 
-                
+                ctx.clip(); // Create a circular clipping path
 
-                                ctx.fillRect(canvas.width / 2 - 150, lineY + 140, 300, 1); // Line below MBTI
+        
 
-                
+                // ... (The rest of the photo drawing logic is the same) ...
 
-                        
+                const userAspect = userImg.width / userImg.height;
 
-                
+                const circleAspect = 1;
 
-                                ctx.font = '45px Noto Sans KR';
+                let sx, sy, sWidth, sHeight;
 
-                
+                if (userAspect > circleAspect) {
 
-                                ctx.fillText('당신을 위한 향기', canvas.width / 2, lineY + 210);
+                    sHeight = userImg.height;
 
-                
+                    sWidth = sHeight;
 
-                        
+                    sx = (userImg.width - sWidth) / 2;
 
-                
+                    sy = 0;
 
-                                ctx.font = 'bold 65px Noto Sans KR'; // Reduced font size
+                } else {
 
-                
+                    sWidth = userImg.width;
 
-                                ctx.fillText(finalScentName, canvas.width / 2, lineY + 300);
+                    sHeight = sWidth;
 
-                
+                    sx = 0;
 
-                        
+                    sy = (userImg.height - sHeight) / 2;
 
-                
+                }
 
-                                // Draw scent description
+                ctx.drawImage(userImg, sx, sy, sWidth, sHeight, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
 
-                
+                ctx.beginPath();
 
-                                ctx.font = '30px Noto Sans KR';
+                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
 
-                
+                ctx.lineWidth = 10;
 
-                                const maxWidth = canvas.width - 100;
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
 
-                
+                ctx.stroke();
 
-                                const lineHeight = 45;
+                ctx.restore();
 
-                
+        
 
-                                let y = lineY + 370;
+                // --- 3. Draw Logo Text ---
 
-                
+                ctx.fillStyle = '#003f5c'; // Company brand color
 
-                        
+                ctx.font = 'bold 80px Inter, Noto Sans KR';
 
-                
+                ctx.textAlign = 'center';
 
-                                const words = scentDescriptionText.split(' ');
+                ctx.fillText('T8', canvas.width / 2, 120);
 
-                
+                ctx.font = '50px Inter, Noto Sans KR';
 
-                                let line = '';
+                ctx.fillText('AROMA', canvas.width / 2, 180);
 
-                
+        
 
-                                for (let n = 0; n < words.length; n++) {
+                // --- 4. Draw MBTI & Scent Text ---
 
-                
+                const mbtiResult = mbtiTypeDisplay.textContent;
 
-                                    const testLine = line + words[n] + ' ';
+                const finalScentName = scentName.textContent;
 
-                
+                const scentDescriptionText = scentDescription.textContent;
 
-                                    const metrics = ctx.measureText(testLine);
+        
 
-                
+                ctx.fillStyle = '#003f5c'; // Unify color to brand color
 
-                                    if (metrics.width > maxWidth && n > 0) {
+                ctx.textAlign = 'center';
 
                 
 
-                                        ctx.fillText(line, canvas.width / 2, y);
+                // --- Decorative Lines ---
 
-                
+                const lineY = circle.y + circle.radius + 60;
 
-                                        line = words[n] + ' ';
+                ctx.fillStyle = '#D3CFC4'; // A soft, elegant color for the lines
 
-                
+                ctx.fillRect(canvas.width / 2 - 150, lineY, 300, 1); // Line above MBTI
 
-                                        y += lineHeight;
+        
 
-                
+                ctx.fillStyle = '#003f5c'; // Unify color to brand color
 
-                                    } else {
+                ctx.font = 'bold 90px Noto Sans KR'; // Reduced font size
 
-                
+                ctx.fillText(mbtiResult, canvas.width / 2, lineY + 100);
 
-                                        line = testLine;
+        
 
-                
+                ctx.fillRect(canvas.width / 2 - 150, lineY + 140, 300, 1); // Line below MBTI
 
-                                    }
+        
 
-                
+                ctx.font = '45px Noto Sans KR';
 
-                                }
+                ctx.fillText('당신을 위한 향기', canvas.width / 2, lineY + 210);
 
-                
+        
 
-                                ctx.fillText(line, canvas.width / 2, y);
+                ctx.font = 'bold 65px Noto Sans KR'; // Reduced font size
 
-                
+                ctx.fillText(finalScentName, canvas.width / 2, lineY + 300);
 
-                        
+        
 
-                
+                // Draw scent description
 
-                                // --- 5. Draw Footer Text ---
+                ctx.font = '30px Noto Sans KR';
 
-                
+                const maxWidth = canvas.width - 100;
 
-                                ctx.font = 'italic 35px Noto Sans KR';
+                const lineHeight = 45;
 
-                
+                let y = lineY + 370;
 
-                                ctx.fillStyle = '#666666'; // Gray for footer
+        
 
-                
+                const words = scentDescriptionText.split(' ');
 
-                                // Adjust Y for global translation
+                let line = '';
 
-                
+                for (let n = 0; n < words.length; n++) {
 
-                                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 60 - topMargin);
+                    const testLine = line + words[n] + ' ';
 
-                
+                    const metrics = ctx.measureText(testLine);
 
-                        
+                    if (metrics.width > maxWidth && n > 0) {
 
-                
+                        ctx.fillText(line, canvas.width / 2, y);
 
-                                // --- 6. Draw Card Border ---
+                        line = words[n] + ' ';
 
-                
+                        y += lineHeight;
 
-                                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    } else {
 
-                
+                        line = testLine;
 
-                                ctx.strokeStyle = '#003f5c';
+                    }
 
-                
+                }
 
-                                ctx.lineWidth = 8;
+                ctx.fillText(line, canvas.width / 2, y);
 
-                
+        
 
-                                ctx.strokeRect(0, 0, canvas.width, canvas.height);
+                // --- 5. Draw Footer Text ---
 
-                
+                ctx.font = 'italic 35px Noto Sans KR';
 
-                                ctx.strokeStyle = '#D3CFC4'; // Match separator line color
+                ctx.fillStyle = '#666666'; // Gray for footer
 
-                
+                // Adjust Y for global translation
 
-                                ctx.lineWidth = 2;
+                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 60 - topMargin);
 
-                
+        
 
-                                ctx.setLineDash([10, 10]);
+                // --- 6. Draw Card Border ---
 
-                
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-                                ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+                ctx.strokeStyle = '#003f5c';
 
-                
+                ctx.lineWidth = 8;
 
-                                ctx.setLineDash([]);
+                ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-                
+                ctx.strokeStyle = '#D3CFC4'; // Match separator line color
 
-                        
+                ctx.lineWidth = 2;
 
-                
+                ctx.setLineDash([10, 10]);
 
-                                // --- 7. Enable button and Generate Preview ---
+                ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
 
-                
+                ctx.setLineDash([]);
 
-                                saveCardBtn.disabled = false;
+        
 
-                
+                // --- 7. Enable button and Generate Preview ---
 
-                                cardPreviewContainer.innerHTML = `<img src="${canvas.toDataURL('image/jpeg', 0.9)}" alt="Generated Card Preview">`;
+                saveCardBtn.disabled = false;
 
-                
+                cardPreviewContainer.innerHTML = `<img src="${canvas.toDataURL('image/jpeg', 0.9)}" alt="Generated Card Preview">`;
 
-                            }
+            }
 
     function saveCard() {
         const link = document.createElement('a');
         link.download = 'My_Taean_Scent_Card.jpg'; // Changed to .jpg
         link.href = canvas.toDataURL('image/jpeg', 0.9); // Changed to image/jpeg
-        console.log('Saved card data URL:', link.href);
         link.click();
     }
 
