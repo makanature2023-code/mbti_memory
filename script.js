@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Buttons
     const startBtn = document.getElementById('start-btn');
     const restartBtn = document.getElementById('restart-btn');
-    const purchaseLink = document.getElementById('purchase-link');
 
     // Form selections
     const genderRadios = document.querySelectorAll('input[name="gender"]');
@@ -35,6 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultOilFront = document.getElementById('result-oil-front');
     const resultOilBack = document.getElementById('result-oil-back');
 
+    // Memory Card elements
+    const photoUpload = document.getElementById('photo-upload');
+    const cardPreviewContainer = document.getElementById('card-preview-container');
+    const saveCardBtn = document.getElementById('save-card-btn');
+    const canvas = document.getElementById('card-canvas');
+    const ctx = canvas.getContext('2d');
+    const logoImg = new Image();
+    logoImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAG+CAYAAADjEaSoAAAAAXNSR0IArs4c6QAAABxpSURBVHic7cExAQAAAMKg9U9tCU+gAAAAAAAAAAAAAADg3w0YgAAB50m63gAAAABJRU5ErkJggg=='; // Embed logo as Base64
+
+    // Scores toggle elements
+    const toggleScoresBtn = document.getElementById('toggle-scores-btn');
+    const scoresCollapsible = document.getElementById('scores-collapsible');
+
     let userGender = null;
     let userAge = null;
     let currentQuestionIndex = 0;
@@ -42,49 +54,49 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeQuestionSet = [];
 
     const scents = {
-        '백화산 (Mountain Mist)': {
+        '백화산': {
             desc: {
                 INTJ: '계획적이고 깊은 사고를 하는 당신에게, 백화산의 맑은 공기는 생각의 숲을 정리해주는 향기입니다. 레몬과 편백의 투명한 향이 집중을 돕고 머리를 맑게 비워줍니다.',
                 ESFP: '감각적이고 자유로운 당신에게, 유칼립투스와 편백의 상쾌함이 에너지를 충전시킵니다. 마치 숲 속에서 맞는 이른 아침의 공기처럼 활력을 선사합니다.'
             }
         },
-        '안흥진성 (Ocean Wake)': {
+        '안흥진성': {
             desc: {
                 ESTJ: '분명하고 책임감 있는 당신에게, 바다의 바람 같은 페퍼민트 향이 머리를 맑게 하고 선명한 결단의 순간을 만들어 줍니다.',
                 INFP: '이상과 감정을 중시하는 당신에게, 프랑킨센스와 베르가못이 내면의 에너지를 깨워 흔들리는 마음을 다독이고 방향을 찾아줍니다.'
             }
         },
-        '안면송림 (Pine Whisper)': {
+        '안면송림': {
             desc: {
                 ISFJ: '따뜻하고 배려 깊은 당신에게, 소나무 숲의 잔잔한 향이 마음의 안식을 선물합니다. 피톤치드의 부드러운 울림이 하루를 다독여줍니다.',
                 ENTP: '창의적이고 도전적인 당신에게, 베티버와 샌달우드의 깊은 향이 산만한 생각을 정리하고 새로운 아이디어의 리듬을 만들어줍니다.'
             }
         },
-        '만리포 (Sunset Breeze)': {
+        '만리포': {
             desc: {
                 ENFJ: '따뜻한 리더십을 가진 당신에게, 유자와 만다린의 감귤 향이 사람과의 연결을 부드럽게 합니다. 노을빛처럼 마음을 포근히 덮어주는 향기입니다.',
                 ISTP: '논리적이지만 감각적인 당신에게, 자몽의 산뜻함이 감정을 가볍게 터치해줍니다. 저녁 바람처럼 다가오는 향이 짧은 쉼표가 되어줍니다.'
             }
         },
-        '신두사구 (Golden Sand)': {
+        '신두사구': {
             desc: {
                 ISFP: '예술적 감성이 풍부한 당신에게, 프랑킨센스와 샌달우드의 조화가 내면의 감정을 부드럽게 열어줍니다. 따뜻한 모래 위에서 깊게 숨쉬는 순간의 향기입니다.',
                 ENTJ: '결단력 있고 비전을 추구하는 당신에게, 샌달우드의 무게감과 클로브의 따뜻함이 중심을 잡아줍니다. 고요한 사구 위, 내면의 질서를 세우는 향입니다.'
             }
         },
-        '가의도 (Island Bloom)': {
+        '가의도': {
             desc: {
                 ENFP: '영감이 넘치는 당신에게, 자스민과 오렌지의 향이 햇살처럼 긍정 에너지를 채워줍니다. 세상을 향해 웃을 힘을 주는 향기입니다.',
                 ISTJ: '성실하고 실용적인 당신에게, 바닐라와 네롤리의 은은한 조화가 일상에 정돈된 쉼을 줍니다. 반복되는 하루 속에서도 안정감을 찾게 하는 향입니다.'
             }
         },
-        '몽산해변 (Wave of Sleep)': {
+        '몽산해변': {
             desc: {
                 INFJ: '깊이 있는 통찰과 감성을 가진 당신에게, 라벤더와 네롤리가 마음의 파도를 잠재워 줍니다. 조용한 밤, 자신을 회복시키는 향기입니다.',
                 ESTP: '즉흥적이고 감각적인 당신에게, 라벤더와 페퍼민트의 조화가 정신을 쉬게 합니다. 바쁜 하루 속 잠깐의 정지 버튼 같은 향입니다.'
             }
         },
-        '할미·할아비바위 (Eternal Love)': {
+        '할미·할아비바위': {
             desc: {
                 INFP: '감성이 풍부한 당신에게, 로즈와 오스만투스의 달콤한 향이 오래된 사랑처럼 따뜻하게 스며듭니다. 감정을 안아주는 부드러운 위로의 향입니다.',
                 ESTP: '열정적이고 매력적인 당신에게, 제라늄과 일랑일랑의 관능적인 조화가 감정의 균형을 맞춰줍니다. 사랑과 자유를 동시에 표현하는 향입니다.'
@@ -93,14 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const mbtiScentMapping = {
-        INTJ: '백화산 (Mountain Mist)', ESFP: '백화산 (Mountain Mist)',
-        INFP: '안흥진성 (Ocean Wake)', ESTP: '할미·할아비바위 (Eternal Love)',
-        ESTJ: '안흥진성 (Ocean Wake)', INTP: '안흥진성 (Ocean Wake)',
-        ISFJ: '안면송림 (Pine Whisper)', ENTP: '안면송림 (Pine Whisper)',
-        ENFJ: '만리포 (Sunset Breeze)', ISTP: '만리포 (Sunset Breeze)',
-        ISFP: '신두사구 (Golden Sand)', ENTJ: '신두사구 (Golden Sand)',
-        ENFP: '가의도 (Island Bloom)', ISTJ: '가의도 (Island Bloom)',
-        INFJ: '몽산해변 (Wave of Sleep)', ESFJ: '몽산해변 (Wave of Sleep)'
+        INTJ: '백화산', ESFP: '백화산',
+        INFP: '안흥진성', ESTP: '할미·할아비바위',
+        ESTJ: '안흥진성', INTP: '안흥진성',
+        ISFJ: '안면송림', ENTP: '안면송림',
+        ENFJ: '만리포', ISTP: '만리포',
+        ISFP: '신두사구', ENTJ: '신두사구',
+        ENFP: '가의도', ISTJ: '가의도',
+        INFJ: '몽산해변', ESFJ: '몽산해변'
     };
 
     const questions = {
@@ -247,11 +259,288 @@ document.addEventListener('DOMContentLoaded', () => {
         switchScreen(resultScreen, startScreen);
     });
 
+    photoUpload.addEventListener('change', handlePhotoUpload);
+    saveCardBtn.addEventListener('click', saveCard);
+
+    toggleScoresBtn.addEventListener('click', () => {
+        const isHidden = scoresCollapsible.style.display === 'none';
+        scoresCollapsible.style.display = isHidden ? 'block' : 'none';
+        toggleScoresBtn.textContent = isHidden ? '숨기기' : '자세히 보기';
+    });
+
     // --- Functions ---
 
     function switchScreen(from, to) {
         from.classList.remove('active');
         to.classList.add('active');
+    }
+
+    function handlePhotoUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const userImage = new Image();
+            userImage.onload = () => {
+                generateCard(userImage);
+            };
+            userImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+            function generateCard(userImg) {
+
+                // Set canvas dimensions (9:16 aspect ratio)
+
+                canvas.width = 750;
+
+                canvas.height = 1334;
+
+        
+
+                // --- 1. Draw Cream Background for the Card ---
+
+                ctx.fillStyle = '#FDFBF7'; // Cream background
+
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        
+
+                // --- Global Vertical Shift ---
+
+                const topMargin = 60; // Increase this value to move everything down
+
+                ctx.translate(0, topMargin);
+
+        
+
+                // --- 2. Draw User's Photo in a Circle ---
+
+                ctx.save(); // Save the current state
+
+                const circle = {
+
+                    x: canvas.width / 2,
+
+                    y: 400, // Base Y position
+
+                    radius: 200
+
+                };
+
+                ctx.beginPath();
+
+                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
+
+                ctx.closePath();
+
+                ctx.clip(); // Create a circular clipping path
+
+        
+
+                // ... (The rest of the photo drawing logic is the same) ...
+
+                const userAspect = userImg.width / userImg.height;
+
+                const circleAspect = 1;
+
+                let sx, sy, sWidth, sHeight;
+
+                if (userAspect > circleAspect) {
+
+                    sHeight = userImg.height;
+
+                    sWidth = sHeight;
+
+                    sx = (userImg.width - sWidth) / 2;
+
+                    sy = 0;
+
+                } else {
+
+                    sWidth = userImg.width;
+
+                    sHeight = sWidth;
+
+                    sx = 0;
+
+                    sy = (userImg.height - sHeight) / 2;
+
+                }
+
+                ctx.drawImage(userImg, sx, sy, sWidth, sHeight, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
+
+                ctx.beginPath();
+
+                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
+
+                ctx.lineWidth = 10;
+
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+
+                ctx.stroke();
+
+                ctx.restore();
+
+        
+
+                // --- 3. Draw Logo Text ---
+
+                ctx.fillStyle = '#003f5c'; // Company brand color
+
+                ctx.font = 'bold 80px Inter, Noto Sans KR';
+
+                ctx.textAlign = 'center';
+
+                ctx.fillText('T8', canvas.width / 2, 120);
+
+                ctx.font = '50px Inter, Noto Sans KR';
+
+                ctx.fillText('AROMA', canvas.width / 2, 180);
+
+        
+
+                // --- 4. Draw MBTI & Scent Text ---
+
+                const mbtiResult = mbtiTypeDisplay.textContent;
+
+                const finalScentName = scentName.textContent;
+
+                const scentDescriptionText = scentDescription.textContent;
+
+        
+
+                ctx.fillStyle = '#003f5c'; // Unify color to brand color
+
+                ctx.textAlign = 'center';
+
+                
+
+                // --- Decorative Lines ---
+
+                const lineY = circle.y + circle.radius + 60;
+
+                ctx.fillStyle = '#D3CFC4'; // A soft, elegant color for the lines
+
+                ctx.fillRect(canvas.width / 2 - 150, lineY, 300, 1); // Line above MBTI
+
+        
+
+                ctx.fillStyle = '#003f5c'; // Unify color to brand color
+
+                ctx.font = 'bold 90px Noto Sans KR'; // Reduced font size
+
+                ctx.fillText(mbtiResult, canvas.width / 2, lineY + 100);
+
+        
+
+                ctx.fillRect(canvas.width / 2 - 150, lineY + 140, 300, 1); // Line below MBTI
+
+        
+
+                ctx.font = '45px Noto Sans KR';
+
+                ctx.fillText('당신을 위한 향기', canvas.width / 2, lineY + 210);
+
+        
+
+                ctx.font = 'bold 65px Noto Sans KR'; // Reduced font size
+
+                ctx.fillText(finalScentName, canvas.width / 2, lineY + 300);
+
+        
+
+                // Draw scent description
+
+                ctx.font = '30px Noto Sans KR';
+
+                const maxWidth = canvas.width - 100;
+
+                const lineHeight = 45;
+
+                let y = lineY + 370;
+
+        
+
+                const words = scentDescriptionText.split(' ');
+
+                let line = '';
+
+                for (let n = 0; n < words.length; n++) {
+
+                    const testLine = line + words[n] + ' ';
+
+                    const metrics = ctx.measureText(testLine);
+
+                    if (metrics.width > maxWidth && n > 0) {
+
+                        ctx.fillText(line, canvas.width / 2, y);
+
+                        line = words[n] + ' ';
+
+                        y += lineHeight;
+
+                    } else {
+
+                        line = testLine;
+
+                    }
+
+                }
+
+                ctx.fillText(line, canvas.width / 2, y);
+
+        
+
+                // --- 5. Draw Footer Text ---
+
+                ctx.font = 'italic 35px Noto Sans KR';
+
+                ctx.fillStyle = '#666666'; // Gray for footer
+
+                // Adjust Y for global translation
+
+                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 80 - topMargin);
+
+        
+
+                // --- 6. Draw Card Border ---
+
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+                ctx.strokeStyle = '#003f5c';
+
+                ctx.lineWidth = 8;
+
+                ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = '#D3CFC4'; // Match separator line color
+
+                ctx.lineWidth = 2;
+
+                ctx.setLineDash([10, 10]);
+
+                ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+
+                ctx.setLineDash([]);
+
+        
+
+                // --- 7. Enable button and Generate Preview ---
+
+                saveCardBtn.disabled = false;
+
+                cardPreviewContainer.innerHTML = `<img src="${canvas.toDataURL('image/jpeg', 0.9)}" alt="Generated Card Preview">`;
+
+            }
+
+    function saveCard() {
+        const link = document.createElement('a');
+        link.download = 'My_Taean_Scent_Card.jpg'; // Changed to .jpg
+        link.href = canvas.toDataURL('image/jpeg', 0.9); // Changed to image/jpeg
+        link.click();
     }
 
     function displayQuestion() {
@@ -313,8 +602,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scentDescription.textContent = selectedDescription;
 
 
-        purchaseLink.href = 'https://smartstore.naver.com/makanature/category/1c62f089aed3466692e2b3357212df06?cp=1';
-
         // Calculate and display scores
         const dichotomyPairs = {
             E: ['E', 'I'], I: ['E', 'I'],
@@ -349,11 +636,26 @@ document.addEventListener('DOMContentLoaded', () => {
         currentQuestionIndex = 0;
         scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
         activeQuestionSet = [];
-        startBtn.disabled = true;
+        startBtn.disabled = false;
         progressBar.style.width = '0%';
         const checkedRadios = document.querySelectorAll('input[type="radio"]:checked');
         checkedRadios.forEach(radio => {
             radio.checked = false;
         });
+
+        // Reset memory card elements
+        cardPreviewContainer.innerHTML = '';
+        saveCardBtn.disabled = true;
+        if (photoUpload) {
+            photoUpload.value = '';
+        }
+
+        // Reset scores toggle
+        if (scoresCollapsible) {
+            scoresCollapsible.style.display = 'none';
+        }
+        if (toggleScoresBtn) {
+            toggleScoresBtn.textContent = '자세히 보기';
+        }
     }
 });

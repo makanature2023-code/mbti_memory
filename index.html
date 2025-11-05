@@ -105,8 +105,11 @@
                           <p class="mbti-type-display"><span id="mbti-type"></span></p>            </div>
             <p id="scent-description"></p>
           </div>
-          <div class="scores-container">
-            <h4>나의 성향 점수</h4>
+
+          <button id="toggle-scores-btn" class="btn-secondary">자세히 보기</button>
+          <div id="scores-collapsible" style="display: none; width: 100%;">
+            <div class="scores-container">
+              <h4>나의 성향 점수</h4>
             <div class="score-item">
               <span class="dichotomy">외향 (E)</span>
               <div class="score-bar-container">
@@ -165,10 +168,23 @@
             </div>
           </div>
         </div>
+        </div>
+
+        <div class="memory-card-creator">
+          <h3>나만의 태안 추억 향기 카드 만들기</h3>
+          <p>태안 여행 사진을 업로드하고 특별한 카드를 만들어보세요!</p>
+          <label for="photo-upload" class="btn-result">사진 선택</label>
+          <input type="file" id="photo-upload" accept="image/*" style="display:none;">
+          <div id="card-preview-container"></div>
+          <button id="save-card-btn" class="btn-result" disabled>카드 저장하기</button>
+        </div>
 
         <div class="result-buttons">
-          <a id="purchase-link" href="#" target="_blank" class="btn">구매하기</a>
-          <button id="restart-btn" class="btn">다시하기</button>
+          <div class="purchase-info-box">
+            <p>카운터에서 직접 향기를 맡아보시고 구매하세요!</p>
+            <!-- 이미지를 위한 공간 -->
+          </div>
+          <button id="restart-btn" class="btn-result">다시하기</button>
         </div>
       </div>
     </div>
@@ -176,6 +192,7 @@
 
   </div>
 
+  <canvas id="card-canvas" style="display: none;"></canvas>
   <script src="script.js?v=1700000007"></script>
 </body>
 </html>

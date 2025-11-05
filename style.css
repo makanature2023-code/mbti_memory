@@ -289,12 +289,13 @@ p {
 
 /* Result Screen Content Override */
 #result-screen .content {
-  background: rgba(0, 0, 0, 0.0);
+  background: transparent;
   color: #000066;
-  overflow-y: hidden; /* 스크롤바 비활성화 */
+  overflow-y: auto; /* Allow scrolling */
   padding-bottom: 10px;
   flex-grow: 1;
-  justify-content: center; /* 수직 중앙 정렬 */
+  justify-content: flex-start; /* Align to top to make scrolling natural */
+  width: 100%; /* Ensure it takes full width */
 }
 
 .content {
@@ -445,6 +446,40 @@ a.btn {
     font-family: 'Pretendard', sans-serif;
 }
 
+/* New button style for the result screen */
+.btn-result {
+    display: inline-block;
+    width: auto; /* Changed from 100% to auto */
+    padding: 12px 30px; /* Added horizontal padding for better appearance */
+    border-radius: 10px;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 0.9em; /* Smaller font */
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: transparent;
+    color: #003f5c; /* Brand color text */
+    border: 2px solid #003f5c; /* Brand color border */
+    align-self: center; /* Center the button within its flex container */
+}
+
+.btn-result:hover {
+    background-color: #003f5c; /* Fill with brand color on hover */
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn-result:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 /* Layout for result buttons */
 .result-buttons {
     display: flex;
@@ -507,3 +542,62 @@ a.btn {
     padding: 12px;
   }
 }
+
+.memory-card-creator {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+#card-preview-container img {
+    max-width: 100%;
+    max-height: 350px; /* Constrain the height of the preview */
+    object-fit: contain;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.purchase-info-box {
+    flex-grow: 1;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #B0D9E7;
+    background-color: #F0F8FF;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.purchase-info-box p {
+    margin: 0;
+    font-weight: 600;
+    color: #003f5c;
+    line-height: 1.4;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #0095ff;
+    border: 1px solid #0095ff;
+    padding: 8px 20px;
+    margin-top: 20px;
+    width: auto;
+    align-self: center;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #f0f8ff;
+    transform: translateY(-1px);
+}
+
+
+
+
