@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 
 
-                ctx.fillStyle = '#D0E0F0'; // Changed to a lighter blue
+                ctx.fillStyle = '#B0E0E6'; // Changed back to PowderBlue
 
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
