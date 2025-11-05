@@ -505,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Adjust Y for global translation
 
-                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 80 - topMargin);
+                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 60 - topMargin);
 
         
 
