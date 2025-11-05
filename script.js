@@ -63,7 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
         '안흥진성': {
             desc: {
                 ESTJ: '분명하고 책임감 있는 당신에게, 바다의 바람 같은 페퍼민트 향이 머리를 맑게 하고 선명한 결단의 순간을 만들어 줍니다.',
-                INFP: '이상과 감정을 중시하는 당신에게, 프랑킨센스와 베르가못이 내면의 에너지를 깨워 흔들리는 마음을 다독이고 방향을 찾아줍니다.'
+                INFP: '이상과 감정을 중시하는 당신에게, 프랑킨센스와 베르가못이 내면의 에너지를 깨워 흔들리는 마음을 다독이고 방향을 찾아줍니다.',
+                INTP: '논리적이고 분석적인 당신에게, 안흥진성의 시원한 바닷바람은 복잡한 생각을 정리하고 새로운 통찰을 얻게 합니다. 명료한 사고를 돕는 향기입니다.'
             }
         },
         '안면송림': {
@@ -283,7 +284,9 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.onload = (e) => {
             const userImage = new Image();
             userImage.onload = () => {
-                generateCard(userImage);
+                document.fonts.ready.then(() => {
+                    generateCard(userImage);
+                });
             };
             userImage.src = e.target.result;
         };
