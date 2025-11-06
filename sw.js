@@ -1,4 +1,4 @@
-const CACHE_NAME = 't8-scent-finder-cache-v2';
+const CACHE_NAME = 't8-scent-finder-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
