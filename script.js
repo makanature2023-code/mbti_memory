@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('card-canvas');
     const ctx = canvas.getContext('2d');
     const logoImg = new Image();
-    logoImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAG+CAYAAADjEaSoAAAAAXNSR0IArs4c6QAAABxpSURBVHic7cExAQAAAMKg9U9tCU+gAAAAAAAAAAAAAADg3w0YgAAB50m63gAAAABJRU5ErkJggg=='; // Embed logo as Base64
+    logoImg.src = 'logo.png'; // CORRECTLY load the logo file
 
     // Scores toggle elements
     const toggleScoresBtn = document.getElementById('toggle-scores-btn');
