@@ -413,19 +413,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
 
-                // --- 3. Draw Logo Text ---
+                                // --- 3. Draw Logo Image ---
 
-                ctx.fillStyle = '#003f5c'; // Company brand color
+        
 
-                ctx.font = 'bold 80px Inter, Noto Sans KR';
+                                const logoWidth = 160; // Fixed width for the logo
 
-                ctx.textAlign = 'center';
+        
 
-                ctx.fillText('T8', canvas.width / 2, 120);
+                                const logoHeight = logoImg.height * (logoWidth / logoImg.width); // Maintain aspect ratio
 
-                ctx.font = '50px Inter, Noto Sans KR';
+        
 
-                ctx.fillText('AROMA', canvas.width / 2, 180);
+                                const logoX = (canvas.width - logoWidth) / 2;
+
+        
+
+                                const logoY = 150 - (logoHeight / 2); // Center vertically around 150
+
+        
+
+                                ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
 
         
 
