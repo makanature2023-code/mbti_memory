@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    if ('serviceWorker' in navigator) {
+    /* if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').then(registration => {
           console.log('SW registered: ', registration);
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log('SW registration failed: ', registrationError);
         });
       });
-    }
+    } */
 
     const appContainer = document.querySelector('.app-container');
 
@@ -168,7 +168,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 { q: '인테리어를 바꾸고 싶다. 나의 스타일은?', a: [{t:'요즘 유행하는 스타일의 가구와 소품을 찾아본다', v:'S'}, {t:'나만의 취향과 스토리가 담긴 공간으로 꾸민다', v:'N'}, {t:'사람들을 초대해서 파티를 열고 싶은 아늑한 공간으로 만든다', v:'E'}, {t:'혼자만의 휴식을 위한 편안하고 조용한 공간으로 만든다', v:'I'}] },
                 { q: '이직을 준비한다면, 가장 중요하게 생각하는 것은?', a: [{t:'회사의 안정성과 연봉, 복지 혜택', v:'S'}, {t:'나의 성장을 돕고 비전을 함께할 수 있는 회사', v:'N'}, {t:'수평적이고 자유로운 분위기의 동료들', v:'F'}, {t:'나의 능력을 인정받고 성과를 낼 수 있는 곳', v:'T'}] },
                 { q: '여행을 떠난다면, 어떤 스타일의 여행을 선호하나?', a: [{t:'맛집, 쇼핑, 관광 명소를 모두 즐기는 알찬 여행', v:'J'}, {t:'발길 닿는 대로, 마음 가는 대로 떠나는 자유로운 여행', v:'P'}, {t:'현지인처럼 살아보는 감성적인 여행', v:'N'}, {t:'다양한 액티비티를 즐기는 역동적인 여행', v:'S'}] },
-                { q: '친구가 나의 단점을 이야기한다면, 나의 반응은?', a: [{t:'"내가 그랬어? 몰랐네" 일단 수긍하고 고치려고 노력한다', v:'F'}, {t:'"너는 안 그래?" 라며 친구의 단점도 이야기한다', v:'T'}, {t:'나의 행동을 되돌아보며 왜 그런 말을 했는지 생각해본다', v:'I'}, {t:'"그럴 수도 있지!" 쿨하게 넘기고 다른 이야기를 시작한다', v:'E'}] }
+                {
+                    q: '친구가 나의 단점을 이야기한다면, 나의 반응은?',
+                    a: [
+                        {t:'"내가 그랬어? 몰랐네" 일단 수긍하고 고치려고 노력한다', v:'F'},
+                        {t:'"너는 안 그래?" 라며 친구의 단점도 이야기한다', v:'T'},
+                        {t:'나의 행동을 되돌아보며 왜 그런 말을 했는지 생각해본다', v:'I'},
+                        {t:'"그럴 수도 있지!" 쿨하게 넘기고 다른 이야기를 시작한다', v:'E'}
+                    ]
+                }
             ]
         },
         fortiesFifties: {
@@ -417,8 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
 
-                                const logoWidth = 160; // Fixed width for the logo
-
+                                                                    const logoWidth = 240; // Fixed width for the logo
         
 
                                 const logoHeight = logoImg.height * (logoWidth / logoImg.width); // Maintain aspect ratio
@@ -429,8 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
 
-                                const logoY = 150 - (logoHeight / 2); // Center vertically around 150
-
+                                                                    const logoY = 120 - (logoHeight / 2); // Center vertically around 150
         
 
                                 ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
