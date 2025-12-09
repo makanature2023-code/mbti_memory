@@ -1,14 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    /* if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
-          console.log('SW registered: ', registration);
-        }).catch(registrationError => {
-          console.log('SW registration failed: ', registrationError);
-        });
-      });
-    } */
-
     const appContainer = document.querySelector('.app-container');
 
     function setAppHeight() {
@@ -51,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('card-canvas');
     const ctx = canvas.getContext('2d');
     const logoImg = new Image();
-    logoImg.src = 'logo.png'; // CORRECTLY load the logo file
+    logoImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAG+CAYAAADjEaSoAAAAAXNSR0IArs4c6QAAABxpSURBVHic7cExAQAAAMKg9U9tCU+gAAAAAAAAAAAAAADg3w0YgAAB50m63gAAAABJRU5ErkJggg=='; // Embed logo as Base64
 
     // Scores toggle elements
     const toggleScoresBtn = document.getElementById('toggle-scores-btn');
@@ -73,8 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '안흥진성': {
             desc: {
                 ESTJ: '분명하고 책임감 있는 당신에게, 바다의 바람 같은 페퍼민트 향이 머리를 맑게 하고 선명한 결단의 순간을 만들어 줍니다.',
-                INFP: '이상과 감정을 중시하는 당신에게, 프랑킨센스와 베르가못이 내면의 에너지를 깨워 흔들리는 마음을 다독이고 방향을 찾아줍니다.',
-                INTP: '논리적이고 분석적인 당신에게, 안흥진성의 시원한 바닷바람은 복잡한 생각을 정리하고 새로운 통찰을 얻게 합니다. 명료한 사고를 돕는 향기입니다.'
+                INFP: '이상과 감정을 중시하는 당신에게, 프랑킨센스와 베르가못이 내면의 에너지를 깨워 흔들리는 마음을 다독이고 방향을 찾아줍니다.'
             }
         },
         '안면송림': {
@@ -168,15 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { q: '인테리어를 바꾸고 싶다. 나의 스타일은?', a: [{t:'요즘 유행하는 스타일의 가구와 소품을 찾아본다', v:'S'}, {t:'나만의 취향과 스토리가 담긴 공간으로 꾸민다', v:'N'}, {t:'사람들을 초대해서 파티를 열고 싶은 아늑한 공간으로 만든다', v:'E'}, {t:'혼자만의 휴식을 위한 편안하고 조용한 공간으로 만든다', v:'I'}] },
                 { q: '이직을 준비한다면, 가장 중요하게 생각하는 것은?', a: [{t:'회사의 안정성과 연봉, 복지 혜택', v:'S'}, {t:'나의 성장을 돕고 비전을 함께할 수 있는 회사', v:'N'}, {t:'수평적이고 자유로운 분위기의 동료들', v:'F'}, {t:'나의 능력을 인정받고 성과를 낼 수 있는 곳', v:'T'}] },
                 { q: '여행을 떠난다면, 어떤 스타일의 여행을 선호하나?', a: [{t:'맛집, 쇼핑, 관광 명소를 모두 즐기는 알찬 여행', v:'J'}, {t:'발길 닿는 대로, 마음 가는 대로 떠나는 자유로운 여행', v:'P'}, {t:'현지인처럼 살아보는 감성적인 여행', v:'N'}, {t:'다양한 액티비티를 즐기는 역동적인 여행', v:'S'}] },
-                {
-                    q: '친구가 나의 단점을 이야기한다면, 나의 반응은?',
-                    a: [
-                        {t:'"내가 그랬어? 몰랐네" 일단 수긍하고 고치려고 노력한다', v:'F'},
-                        {t:'"너는 안 그래?" 라며 친구의 단점도 이야기한다', v:'T'},
-                        {t:'나의 행동을 되돌아보며 왜 그런 말을 했는지 생각해본다', v:'I'},
-                        {t:'"그럴 수도 있지!" 쿨하게 넘기고 다른 이야기를 시작한다', v:'E'}
-                    ]
-                }
+                { q: '친구가 나의 단점을 이야기한다면, 나의 반응은?', a: [{t:'"내가 그랬어? 몰랐네" 일단 수긍하고 고치려고 노력한다', v:'F'}, {t:'"너는 안 그래?" 라며 친구의 단점도 이야기한다', v:'T'}, {t:'나의 행동을 되돌아보며 왜 그런 말을 했는지 생각해본다', v:'I'}, {t:'"그럴 수도 있지!" 쿨하게 넘기고 다른 이야기를 시작한다', v:'E'}] }
             ]
         },
         fortiesFifties: {
@@ -302,9 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.onload = (e) => {
             const userImage = new Image();
             userImage.onload = () => {
-                document.fonts.ready.then(() => {
-                    generateCard(userImage);
-                });
+                generateCard(userImage);
             };
             userImage.src = e.target.result;
         };
@@ -313,31 +292,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function generateCard(userImg) {
 
-                                canvas.style.backgroundColor = '#FDFBF7'; // Explicitly set canvas background style
+                // Set canvas dimensions (9:16 aspect ratio)
 
-                
+                canvas.width = 750;
 
-                                // Set canvas dimensions (9:16 aspect ratio)
+                canvas.height = 1334;
 
-                
+        
 
-                                canvas.width = 750;
+                // --- 1. Draw Cream Background for the Card ---
 
-                
-
-                                canvas.height = 1334;
-
-                
-
-                        
-
-                
-
-                                // --- 1. Draw Cream Background for the Card ---
-
-                
-
-                ctx.fillStyle = '#B0E0E6'; // Changed back to PowderBlue
+                ctx.fillStyle = '#FDFBF7'; // Cream background
 
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -421,25 +386,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
 
-                                // --- 3. Draw Logo Image ---
+                // --- 3. Draw Logo Text ---
 
-        
+                ctx.fillStyle = '#003f5c'; // Company brand color
 
-                                                                    const logoWidth = 240; // Fixed width for the logo
-        
+                ctx.font = 'bold 80px Inter, Noto Sans KR';
 
-                                const logoHeight = logoImg.height * (logoWidth / logoImg.width); // Maintain aspect ratio
+                ctx.textAlign = 'center';
 
-        
+                ctx.fillText('T8', canvas.width / 2, 120);
 
-                                const logoX = (canvas.width - logoWidth) / 2;
+                ctx.font = '50px Inter, Noto Sans KR';
 
-        
-
-                                                                    const logoY = 120 - (logoHeight / 2); // Center vertically around 150
-        
-
-                                ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
+                ctx.fillText('AROMA', canvas.width / 2, 180);
 
         
 
@@ -543,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Adjust Y for global translation
 
-                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 60 - topMargin);
+                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 80 - topMargin);
 
         
 
