@@ -279,261 +279,123 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = event.target.files[0];
         if (!file) return;
 
+        const finalScentName = scentName.textContent; // Get the scent name here
+
         const reader = new FileReader();
         reader.onload = (e) => {
             const userImage = new Image();
             userImage.onload = () => {
-                generateCard(userImage);
+                generateCard(userImage, finalScentName); // Pass it to generateCard
             };
             userImage.src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
 
-            function generateCard(userImg) {
+            function generateCard(userImg, finalScentName) {
+                console.log("--- generateCard called ---");
 
                 // Set canvas dimensions (9:16 aspect ratio)
-
                 canvas.width = 750;
-
                 canvas.height = 1334;
 
-        
+                const drawContent = () => {
+                    console.log("drawContent() called");
+                    // --- Global Vertical Shift ---
+                    const topMargin = 60; // Increase this value to move everything down
+                    ctx.translate(0, topMargin);
 
-                // --- 1. Draw Cream Background for the Card ---
+                    // --- 2. Draw User's Photo in a Circle ---
+                    ctx.save(); // Save the current state
+                    const circle = {
+                        x: 563, // Moved to the right
+                        y: 690, // Moved down for testing
+                        radius: 180 // Kept the same size
+                    };
+                    ctx.beginPath();
+                    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
+                    ctx.closePath();
+                    ctx.clip(); // Create a circular clipping path
 
-                ctx.fillStyle = '#FDFBF7'; // Cream background
+                    // ... (The rest of the photo drawing logic is the same) ...
+                    const userAspect = userImg.width / userImg.height;
+                    const circleAspect = 1;
+                    let sx, sy, sWidth, sHeight;
+                    if (userAspect > circleAspect) {
+                        sHeight = userImg.height;
+                        sWidth = sHeight;
+                        sx = (userImg.width - sWidth) / 2;
+                        sy = 0;
+                    } else {
+                        sWidth = userImg.width;
+                        sHeight = sWidth;
+                        sx = 0;
+                        sy = (userImg.height - sHeight) / 2;
+                    }
+                    ctx.drawImage(userImg, sx, sy, sWidth, sHeight, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
+                    ctx.beginPath();
+                    ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
+                    ctx.lineWidth = 10;
+                    ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+                    ctx.stroke();
+                    ctx.restore();
 
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        
+                    // --- 3. Text drawing removed as per user request ---
 
-                // --- Global Vertical Shift ---
 
-                const topMargin = 60; // Increase this value to move everything down
 
-                ctx.translate(0, topMargin);
+                    // --- 5. Draw Footer Text ---
+                    ctx.font = 'italic 35px Noto Sans KR';
+                    ctx.fillStyle = '#666666'; // Gray for footer
+                    // Adjust Y for global translation
 
-        
 
-                // --- 2. Draw User's Photo in a Circle ---
+                    // --- 6. Draw Card Border ---
+                    ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    ctx.strokeStyle = '#003f5c';
+                    ctx.lineWidth = 8;
+                    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = '#D3CFC4'; // Match separator line color
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([10, 10]);
+                    ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
+                    ctx.setLineDash([]);
 
-                ctx.save(); // Save the current state
-
-                const circle = {
-
-                    x: canvas.width / 2,
-
-                    y: 400, // Base Y position
-
-                    radius: 200
-
+                    // --- 7. Enable button and Generate Preview ---
+                    saveCardBtn.disabled = false;
+                    cardPreviewContainer.innerHTML = `<img src="${canvas.toDataURL('image/jpeg', 0.9)}" alt="Generated Card Preview">`;
+                    console.log("Card preview generated and displayed.");
                 };
 
-                ctx.beginPath();
-
-                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
-
-                ctx.closePath();
-
-                ctx.clip(); // Create a circular clipping path
-
-        
-
-                // ... (The rest of the photo drawing logic is the same) ...
-
-                const userAspect = userImg.width / userImg.height;
-
-                const circleAspect = 1;
-
-                let sx, sy, sWidth, sHeight;
-
-                if (userAspect > circleAspect) {
-
-                    sHeight = userImg.height;
-
-                    sWidth = sHeight;
-
-                    sx = (userImg.width - sWidth) / 2;
-
-                    sy = 0;
-
-                } else {
-
-                    sWidth = userImg.width;
-
-                    sHeight = sWidth;
-
-                    sx = 0;
-
-                    sy = (userImg.height - sHeight) / 2;
-
-                }
-
-                ctx.drawImage(userImg, sx, sy, sWidth, sHeight, circle.x - circle.radius, circle.y - circle.radius, circle.radius * 2, circle.radius * 2);
-
-                ctx.beginPath();
-
-                ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2, true);
-
-                ctx.lineWidth = 10;
-
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
-
-                ctx.stroke();
-
-                ctx.restore();
-
-        
-
-                // --- 3. Draw Logo Text ---
-
-                ctx.fillStyle = '#003f5c'; // Company brand color
-
-                ctx.font = 'bold 80px Inter, Noto Sans KR';
-
-                ctx.textAlign = 'center';
-
-                ctx.fillText('T8', canvas.width / 2, 120);
-
-                ctx.font = '50px Inter, Noto Sans KR';
-
-                ctx.fillText('AROMA', canvas.width / 2, 180);
-
-        
-
-                // --- 4. Draw MBTI & Scent Text ---
-
                 const mbtiResult = mbtiTypeDisplay.textContent;
+                console.log(`Checking conditions: finalScentName='${finalScentName}', mbtiResult='${mbtiResult}'`);
 
-                const finalScentName = scentName.textContent;
-
-                const scentDescriptionText = scentDescription.textContent;
-
-        
-
-                ctx.fillStyle = '#003f5c'; // Unify color to brand color
-
-                ctx.textAlign = 'center';
-
-                
-
-                // --- Decorative Lines ---
-
-                const lineY = circle.y + circle.radius + 60;
-
-                ctx.fillStyle = '#D3CFC4'; // A soft, elegant color for the lines
-
-                ctx.fillRect(canvas.width / 2 - 150, lineY, 300, 1); // Line above MBTI
-
-        
-
-                ctx.fillStyle = '#003f5c'; // Unify color to brand color
-
-                ctx.font = 'bold 90px Noto Sans KR'; // Reduced font size
-
-                ctx.fillText(mbtiResult, canvas.width / 2, lineY + 100);
-
-        
-
-                ctx.fillRect(canvas.width / 2 - 150, lineY + 140, 300, 1); // Line below MBTI
-
-        
-
-                ctx.font = '45px Noto Sans KR';
-
-                ctx.fillText('당신을 위한 향기', canvas.width / 2, lineY + 210);
-
-        
-
-                ctx.font = 'bold 65px Noto Sans KR'; // Reduced font size
-
-                ctx.fillText(finalScentName, canvas.width / 2, lineY + 300);
-
-        
-
-                // Draw scent description
-
-                ctx.font = '30px Noto Sans KR';
-
-                const maxWidth = canvas.width - 100;
-
-                const lineHeight = 45;
-
-                let y = lineY + 370;
-
-        
-
-                const words = scentDescriptionText.split(' ');
-
-                let line = '';
-
-                for (let n = 0; n < words.length; n++) {
-
-                    const testLine = line + words[n] + ' ';
-
-                    const metrics = ctx.measureText(testLine);
-
-                    if (metrics.width > maxWidth && n > 0) {
-
-                        ctx.fillText(line, canvas.width / 2, y);
-
-                        line = words[n] + ' ';
-
-                        y += lineHeight;
-
-                    } else {
-
-                        line = testLine;
-
-                    }
-
+                if (finalScentName === '백화산' && (mbtiResult === 'INTJ' || mbtiResult === 'ESFP')) {
+                    console.log("Condition MET. Loading background image.");
+                    const bgImg = new Image();
+                    bgImg.onload = () => {
+                        console.log("Background image LOADED successfully.");
+                        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+                        drawContent();
+                    };
+                    bgImg.onerror = (err) => {
+                        console.error("Background image FAILED to load.", err);
+                        // Fallback to cream if image fails
+                        ctx.fillStyle = '#FDFBF7';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        drawContent();
+                    };
+                 const imgSrc = `card_backgrounds/baek.png`;
+                    console.log(`Setting background image src to: ${imgSrc}`);
+                    bgImg.src = imgSrc;
+                } else {
+                    console.log("Condition NOT MET. Using default cream background.");
+                    // --- 1. Draw Cream Background for the Card ---
+                    ctx.fillStyle = '#FDFBF7'; // Cream background
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    drawContent();
                 }
-
-                ctx.fillText(line, canvas.width / 2, y);
-
-        
-
-                // --- 5. Draw Footer Text ---
-
-                ctx.font = 'italic 35px Noto Sans KR';
-
-                ctx.fillStyle = '#666666'; // Gray for footer
-
-                // Adjust Y for global translation
-
-                ctx.fillText('A Scented Memory from Taean', canvas.width / 2, canvas.height - 80 - topMargin);
-
-        
-
-                // --- 6. Draw Card Border ---
-
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-                ctx.strokeStyle = '#003f5c';
-
-                ctx.lineWidth = 8;
-
-                ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-                ctx.strokeStyle = '#D3CFC4'; // Match separator line color
-
-                ctx.lineWidth = 2;
-
-                ctx.setLineDash([10, 10]);
-
-                ctx.strokeRect(15, 15, canvas.width - 30, canvas.height - 30);
-
-                ctx.setLineDash([]);
-
-        
-
-                // --- 7. Enable button and Generate Preview ---
-
-                saveCardBtn.disabled = false;
-
-                cardPreviewContainer.innerHTML = `<img src="${canvas.toDataURL('image/jpeg', 0.9)}" alt="Generated Card Preview">`;
-
             }
 
     function saveCard() {
