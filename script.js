@@ -41,7 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('card-canvas');
     const ctx = canvas.getContext('2d');
     const logoImg = new Image();
-    logoImg.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAG+CAYAAADjEaSoAAAAAXNSR0IArs4c6QAAABxpSURBVHic7cExAQAAAMKg9U9tCU+gAAAAAAAAAAAAAADg3w0YgAAB50m63gAAAABJRU5ErkJggg=='; // Embed logo as Base64
+    logoImg.src = 'logo.png'; // Load logo from file
+
+    // Add a promise to track logo loading
+    let logoLoadedPromise = new Promise((resolve) => {
+        logoImg.onload = () => resolve();
+        logoImg.onerror = () => {
+            console.error("Logo failed to load.");
+            resolve(); // Still resolve to allow the card to generate
+        };
+    });
 
     // Scores toggle elements
     const toggleScoresBtn = document.getElementById('toggle-scores-btn');
@@ -275,25 +284,27 @@ document.addEventListener('DOMContentLoaded', () => {
         to.classList.add('active');
     }
 
-    function handlePhotoUpload(event) {
+    async function handlePhotoUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
 
         const finalScentName = scentName.textContent; // Get the scent name here
 
         const reader = new FileReader();
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
             const userImage = new Image();
-            userImage.onload = () => {
-                generateCard(userImage, finalScentName); // Pass it to generateCard
+            userImage.onload = async () => { // Make this async too
+                await generateCard(userImage, finalScentName); // Await the card generation
             };
             userImage.src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
 
-            function generateCard(userImg, finalScentName) {
+            async function generateCard(userImg, finalScentName) {
                 console.log("--- generateCard called ---");
+
+                await logoLoadedPromise; // Ensure logo is loaded before drawing
 
                 // Set canvas dimensions (9:16 aspect ratio)
                 canvas.width = 750;
@@ -301,6 +312,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const drawContent = () => {
                     console.log("drawContent() called");
+                    ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformations
+                                // --- Draw Logo ---
+                                // const logoWidth = 600; // Adjust as needed
+                                // const logoHeight = logoImg.height * (logoWidth / logoImg.width);
+                                // ctx.drawImage(logoImg, (canvas.width - logoWidth) / 2, 0, logoWidth, logoHeight);
                     // --- Global Vertical Shift ---
                     const topMargin = 60; // Increase this value to move everything down
                     ctx.translate(0, topMargin);
@@ -371,31 +387,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 const mbtiResult = mbtiTypeDisplay.textContent;
                 console.log(`Checking conditions: finalScentName='${finalScentName}', mbtiResult='${mbtiResult}'`);
 
-                if (finalScentName === '백화산' && (mbtiResult === 'INTJ' || mbtiResult === 'ESFP')) {
-                    console.log("Condition MET. Loading background image.");
-                    const bgImg = new Image();
-                    bgImg.onload = () => {
-                        console.log("Background image LOADED successfully.");
-                        ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-                        drawContent();
-                    };
-                    bgImg.onerror = (err) => {
-                        console.error("Background image FAILED to load.", err);
-                        // Fallback to cream if image fails
-                        ctx.fillStyle = '#FDFBF7';
+                // Create a promise for background image loading
+                const bgLoadPromise = new Promise((resolve) => {
+                    let imgSrc = '';
+                    if (finalScentName === '백화산' && (mbtiResult === 'INTJ' || mbtiResult === 'ESFP')) {
+                        imgSrc = 'card_backgrounds/baek.png';
+                    } else if (finalScentName === '안흥진성' && (mbtiResult === 'INFP' || mbtiResult === 'ESTJ' || mbtiResult === 'INTP')) {
+                        imgSrc = 'card_backgrounds/ocean wake.png';
+                    }
+
+                    if (imgSrc) {
+                        console.log(`Condition MET. Loading background image: ${imgSrc}`);
+                        const bgImg = new Image();
+                        bgImg.onload = () => {
+                            console.log("Background image LOADED successfully.");
+                            ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+                            resolve();
+                        };
+                        bgImg.onerror = (err) => {
+                            console.error("Background image FAILED to load.", err);
+                            // Fallback to cream if image fails
+                            ctx.fillStyle = '#FDFBF7';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            resolve();
+                        };
+                        bgImg.src = imgSrc;
+                    } else {
+                        console.log("Condition NOT MET. Using default cream background.");
+                        // --- 1. Draw Cream Background for the Card ---
+                        ctx.fillStyle = '#FDFBF7'; // Cream background
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        drawContent();
-                    };
-                 const imgSrc = `card_backgrounds/baek.png`;
-                    console.log(`Setting background image src to: ${imgSrc}`);
-                    bgImg.src = imgSrc;
-                } else {
-                    console.log("Condition NOT MET. Using default cream background.");
-                    // --- 1. Draw Cream Background for the Card ---
-                    ctx.fillStyle = '#FDFBF7'; // Cream background
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    drawContent();
-                }
+                        resolve();
+                    }
+                });
+
+                await bgLoadPromise; // Wait for background to load/draw
+                drawContent();
             }
 
     function saveCard() {
