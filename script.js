@@ -310,6 +310,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 canvas.width = 750;
                 canvas.height = 1334;
 
+                const scentToImageMapping = {
+                    '백화산': 'card_backgrounds/baek.png',
+                    '안흥진성': 'card_backgrounds/ocean wake.png',
+                    '안면송림': 'card_backgrounds/pine whisper.png',
+                    '만리포': 'card_backgrounds/sunset breeze.png',
+                    '신두사구': 'card_backgrounds/golden sand.png',
+                    '가의도': 'card_backgrounds/island bloom.png',
+                    '몽산해변': 'card_backgrounds/wave of sleep.png',
+                    '할미·할아비바위': 'card_backgrounds/ETERNAL LOVE.png'
+                };
+
                 const drawContent = () => {
                     console.log("drawContent() called");
                     ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformations
@@ -389,12 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Create a promise for background image loading
                 const bgLoadPromise = new Promise((resolve) => {
-                    let imgSrc = '';
-                    if (finalScentName === '백화산' && (mbtiResult === 'INTJ' || mbtiResult === 'ESFP')) {
-                        imgSrc = 'card_backgrounds/baek.png';
-                    } else if (finalScentName === '안흥진성' && (mbtiResult === 'INFP' || mbtiResult === 'ESTJ' || mbtiResult === 'INTP')) {
-                        imgSrc = 'card_backgrounds/ocean wake.png';
-                    }
+                    const imgSrc = scentToImageMapping[finalScentName];
 
                     if (imgSrc) {
                         console.log(`Condition MET. Loading background image: ${imgSrc}`);
