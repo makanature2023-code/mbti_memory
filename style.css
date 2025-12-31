@@ -282,10 +282,14 @@ p {
 }
 
 #scent-description {
-    line-height: 1.7;
-    margin-top: 15px;
-    font-size: 1.0em;
+    line-height: 1.6;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Add some space below */
+    font-size: 1.1em; /* Make it slightly larger */
+    font-weight: 400; /* Normal weight for readability */
     max-width: 90%;
+    color: #000066; /* Keep the deep blue color */
+    text-align: center; /* Ensure it's centered */
 }
 
 /* Result Screen Content Override */
