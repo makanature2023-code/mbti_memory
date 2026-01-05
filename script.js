@@ -121,7 +121,18 @@ document.addEventListener('DOMContentLoaded', () => {
         ISFP: '신두사구', ENTJ: '신두사구',
         ENFP: '가의도', ISTJ: '가의도',
         INFJ: '몽산해변', ESTP: '몽산해변',
-        INTP: '할미·할아비바위', ESFJ: '할미·할아비바위'
+        '할미·할아비바위': '할미·할아비바위'
+    };
+
+    const scentToSymbolMapping = {
+        '백화산': 'symbol/1.png',
+        '안흥진성': 'symbol/2.png',
+        '안면송림': 'symbol/3.png',
+        '만리포': 'symbol/4.png',
+        '신두사구': 'symbol/5.png',
+        '가의도': 'symbol/6.png',
+        '몽산해변': 'symbol/7.png',
+        '할미·할아비바위': 'symbol/8.png'
     };
 
     const questions = {
@@ -496,6 +507,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         scentDescription.textContent = selectedDescription;
 
+        // Set scent symbol image
+        const scentSymbolImg = document.getElementById('scent-symbol');
+        if (scentSymbolImg) {
+            const symbolPath = scentToSymbolMapping[finalScentName];
+            if (symbolPath) {
+                scentSymbolImg.src = symbolPath;
+            } else {
+                scentSymbolImg.src = ''; // Clear if no mapping
+            }
+        }
 
         // Calculate and display scores
         const dichotomyPairs = {

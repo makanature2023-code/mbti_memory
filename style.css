@@ -132,6 +132,13 @@ p {
     display: flex;
 }
 
+#result-screen {
+    background-image: url('../images/BG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 /* Start Screen Specifics */
 .form-group {
     margin-bottom: 15px;
@@ -261,66 +268,90 @@ p {
 #answer-options button:hover {
     background: #e0e0e0;
 }
+.result-card {
+    background-color: rgba(255, 255, 255, 0.3); /* Significantly more translucent white background */
+    border-radius: 15px;
+    padding: 25px 20px;
+    margin-top: 20px; /* Space from top */
+    margin-bottom: 20px; /* Space from next section */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Soft shadow */
+    width: 90%;
+    max-width: 400px; /* Max width for the card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative; /* For potential absolute positioning of elements inside */
+}
+
+.result-text {
+    width: 100%;
+    padding: 0; /* Remove existing padding if any */
+    color: #000066; /* Ensure text color within the card is deep blue */
+}
+
 .result-intro {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #003f5c; /* Darker blue for intro text */
+    font-weight: 600;
 }
 
 #scent-name {
-    font-size: 1.1em;
-    font-weight: 600;
-    margin: 0 0 20px;
-}
-
-#mbti-type {
-    font-size: 5.0em;
+    font-size: 1.4em; /* Make scent name more prominent */
     font-weight: 700;
-    color: #003f5c;
-    margin: 0 0 10px;
-    line-height: 1;
+    margin: 5px 0 15px;
+    color: #003f5c; /* Darker blue for scent name */
 }
 
 #scent-description {
-    line-height: 1.6;
-    margin-top: 20px;
-    margin-bottom: 20px; /* Add some space below */
-    font-size: 1.1em; /* Make it slightly larger */
-    font-weight: 400; /* Normal weight for readability */
-    max-width: 90%;
-    color: #000066; /* Keep the deep blue color */
-    text-align: center; /* Ensure it's centered */
+    line-height: 1.5;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    font-weight: 500;
+    max-width: 100%; /* Adjust to card width */
+    color: #333; /* Slightly softer color for description */
+    text-align: center;
 }
 
 /* Result Screen Content Override */
 #result-screen .content {
-  background: transparent;
+  background: transparent; /* Keep transparent to show image */
   color: #000066;
-  overflow-y: auto; /* Allow scrolling */
+  overflow-y: auto;
   padding-bottom: 10px;
   flex-grow: 1;
-  justify-content: flex-start; /* Align to top to make scrolling natural */
-  width: 100%; /* Ensure it takes full width */
+  justify-content: flex-start;
+  width: 100%;
+  align-items: center; /* Center children horizontally */
 }
 
 .content {
   position: relative;
   z-index: 2;
   text-align: center;
-  width: 100%; /* Fill the container, padding will handle spacing */
+  width: 100%;
+  padding: 20px;
   box-sizing: border-box;
-  max-width: 500px;
-  background-color: transparent;
-  padding: 10px 10px 10px 10px;
-  color: #0000CD; /* Changed to deep blue for readability */
-  
-  /* Flex properties to align content to top-center */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Push content to top and bottom */
-  align-items: center; /* Center items horizontally */
-  flex-grow: 1; /* Take up available vertical space */
-  overflow-y: hidden; /* 메인 화면 스크롤 방지 */
+  align-items: center;
+  flex-grow: 1;
+}
+
+#start-screen .content {
+  justify-content: center;
+}
+
+#quiz-screen .content {
+  justify-content: center;
+  padding: 20px;
+}
+
+#result-screen .content {
+  justify-content: flex-start;
+  overflow-y: auto;
 }
 
 #result-screen .content h2,
@@ -334,18 +365,33 @@ p {
     color: #000066;
 }
 
+#scores-collapsible {
+    background-color: rgba(255, 255, 255, 0.7); /* Slightly lighter translucent background */
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px; /* Space from button */
+    margin-bottom: 25px; /* Space from next section */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Lighter shadow */
+    width: 90%;
+    max-width: 380px; /* Slightly smaller than main result card */
+    align-self: center; /* Center it */
+    box-sizing: border-box; /* Include padding in width */
+}
+
 /* Result Screen Score Display */
 .scores-container {
-    margin-top: 30px; /* Increased margin */
+    margin-top: 0; /* Remove top margin as parent handles it */
     width: 100%;
+    padding: 0 10px; /* Inner padding */
+    box-sizing: border-box; /* Include padding in width */
 }
 
 .scores-container h4 {
     font-size: 1.1em;
     font-weight: 600;
-    color: #000066;
-    margin-bottom: 5px;
-    text-align: left;
+    color: #003f5c; /* Darker blue */
+    margin-bottom: 15px;
+    text-align: center; /* Center the heading */
 }
 
 .score-item {
@@ -363,14 +409,14 @@ p {
 .score-bar-container {
     flex-grow: 1;
     height: 12px;
-    background-color: #e0e0e0;
+    background-color: #e6e6e6; /* Lighter background for empty bar */
     border-radius: 6px;
     margin: 0 10px;
 }
 
 .score-bar {
     height: 100%;
-    background-color: #0095ff;
+    background-color: #007bff; /* A standard blue */
     border-radius: 6px;
     width: 0%; /* Will be set by JS */
     transition: width 0.5s ease-in-out;
@@ -382,30 +428,30 @@ p {
     font-weight: 600;
 }
 
-/* Result Screen Oil Image Styles */
+/* Result Screen Visual Elements */
 .mbti-visual-container {
     display: flex;
+    flex-direction: column; /* Stack image and text vertically */
     justify-content: center;
     align-items: center;
-    margin: 0 0 15px; /* Adjusted margin */
+    margin: 10px 0 20px; /* Adjusted margin for better spacing */
 }
 
-.mbti-visual-container img {
-    height: 60px;
-    width: auto;
-}
-
-#result-oil-front {
-    margin-right: 15px;
-}
-
-#result-oil-back {
-    margin-left: 15px;
+#scent-symbol {
+    width: 120px; /* Make the symbol larger */
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 15px; /* Space between symbol and MBTI type */
+    filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.2)); /* Add a subtle shadow */
 }
 
 #result-screen .mbti-type-display {
     margin: 0;
-    font-size: 1em; /* Reset font size */
+    font-size: 2.8em; /* Make MBTI type larger and more prominent */
+    font-weight: 700;
+    color: #003f5c; /* Use the deep blue color */
+    line-height: 1.2; /* Adjust line height for better spacing */
+    letter-spacing: 2px; /* Add some letter spacing */
 }
 
 *:focus {
@@ -454,26 +500,27 @@ a.btn {
 /* New button style for the result screen */
 .btn-result {
     display: inline-block;
-    width: auto; /* Changed from 100% to auto */
-    padding: 12px 30px; /* Added horizontal padding for better appearance */
+    width: auto;
+    padding: 12px 30px;
     border-radius: 10px;
     font-family: 'Pretendard', sans-serif;
-    font-size: 0.9em; /* Smaller font */
+    font-size: 0.9em;
     font-weight: 600;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s;
-    background-color: transparent;
-    color: #003f5c; /* Brand color text */
-    border: 2px solid #003f5c; /* Brand color border */
-    align-self: center; /* Center the button within its flex container */
+    background-color: #003f5c; /* Solid brand color background */
+    color: white; /* White text */
+    border: none; /* No border */
+    align-self: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .btn-result:hover {
-    background-color: #003f5c; /* Fill with brand color on hover */
+    background-color: #005680; /* Darker brand color on hover */
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .btn-result:disabled {
@@ -488,9 +535,13 @@ a.btn {
 /* Layout for result buttons */
 .result-buttons {
     display: flex;
+    flex-direction: column; /* Stack vertically for better mobile view */
     gap: 15px;
-    width: 100%;
-    margin-top: 60px;
+    width: 90%; /* Match width of other cards */
+    max-width: 400px;
+    margin-top: 30px; /* More space */
+    align-self: center; /* Center it */
+    margin-bottom: 20px; /* Space from bottom of screen */
 }
 #start-btn {
   margin-top: 50px;
@@ -549,12 +600,27 @@ a.btn {
 }
 
 .memory-card-creator {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px dashed #ccc;
-    border-radius: 10px;
-    width: 100%;
+    margin-top: 30px; /* More space from previous section */
+    padding: 20px;
+    border: none; /* Remove dashed border */
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
     text-align: center;
+    background-color: rgba(255, 255, 255, 0.7); /* Similar to scores collapsible */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    align-self: center; /* Center it */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.memory-card-creator h3 {
+    color: #003f5c;
+    margin-bottom: 10px;
+}
+
+.memory-card-creator p {
+    color: #333;
+    margin-bottom: 20px;
 }
 
 #card-preview-container img {
@@ -563,44 +629,50 @@ a.btn {
     object-fit: contain;
     border-radius: 10px;
     margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Add shadow to image preview */
 }
 
 .purchase-info-box {
     flex-grow: 1;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #B0D9E7;
-    background-color: #F0F8FF;
+    padding: 20px; /* More padding */
+    border-radius: 12px; /* More rounded corners */
+    border: none; /* Remove border */
+    background-color: rgba(0, 63, 92, 0.8); /* Darker blue, slightly translucent */
+    color: white; /* White text */
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .purchase-info-box p {
     margin: 0;
     font-weight: 600;
-    color: #003f5c;
-    line-height: 1.4;
+    color: white; /* White text for info box */
+    line-height: 1.5;
+    font-size: 1.1em;
 }
 
 .btn-secondary {
-    background-color: transparent;
-    color: #0095ff;
-    border: 1px solid #0095ff;
-    padding: 8px 20px;
-    margin-top: 20px;
+    background-color: #007bff; /* Standard blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 10px 25px;
+    margin-top: 25px; /* Adjust margin from card */
     width: auto;
     align-self: center;
-    border-radius: 20px;
+    border-radius: 25px; /* More rounded */
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .btn-secondary:hover {
-    background-color: #f0f8ff;
+    background-color: #0056b3; /* Darker blue on hover */
     transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 
