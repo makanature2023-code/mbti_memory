@@ -121,7 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ISFP: '신두사구', ENTJ: '신두사구',
         ENFP: '가의도', ISTJ: '가의도',
         INFJ: '몽산해변', ESTP: '몽산해변',
-        '할미·할아비바위': '할미·할아비바위'
+        INTP: '할미·할아비바위',
+        ESFJ: '할미·할아비바위'
     };
 
     const scentToSymbolMapping = {
