@@ -1,17 +1,680 @@
-/* Naver Smart Store Link Styling */
-.purchase-link {
-    display: inline-block;
-    background-color: #03C75A; /* Naver Green */
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 15px; /* Spacing from the paragraph above */
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
+html {
+    height: 100%;
+    box-sizing: border-box;
 }
 
-.purchase-link:hover {
-    background-color: #02a647; /* Darker green on hover */
+*, *::before, *::after {
+  box-sizing: inherit;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600&display=swap');
+
+/* Basic styles from original file */
+
+body {
+  margin: 0;
+  font-family: 'Pretendard', sans-serif;
+  background-color: #0A0A23; /* A neutral background for the page */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensure body takes full viewport height for centering */
+}
+
+.app-container {
+  width: 100%;
+  max-width: 500px;
+  /* height is now set by JS */
+  max-height: 850px; /* Max-height for large screens */
+  margin: 0 auto;
+  position: relative;
+  background-color: #ffffff;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15); /* Add depth */
+  display: flex; /* Use flexbox to manage content height */
+  flex-direction: column;
+}
+
+@media (min-width: 520px) {
+  .app-container {
+    height: 90vh;
+  }
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.35);
+  z-index: -1; /* Put it behind the content */
+}
+
+.logo {
+  width: 160px;
+  margin-bottom: 0px;
+}
+
+h1, h2 {
+  font-weight: 600;
+  color: #000066;
+}
+
+h1 {
+  font-size: 1.6em;
+  margin-bottom: 20px;
+  margin-top: 70px;
+}
+
+.content h1, .content h2 {
+    color: #000066;
+}
+
+.symbol-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px; /* Space between images */
+  margin-top: -60px;
+  max-width: 440px; /* Adjust as needed to control how many fit per row */
+}
+
+.symbol-images img {
+  width: 60px; /* Adjust image size as needed */
+  height: 60px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(21%) sepia(35%) saturate(2335%) hue-rotate(171deg) brightness(92%) contrast(101%);
+}
+
+.symbol-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px; /* Give items a fixed width to help with wrapping */
+}
+
+.symbol-label {
+  font-size: 12px; /* Use a fixed small size */
+  color: #003f5c; /* Match symbol color */
+  margin-top: 4px;
+  font-weight: 600;
+  word-break: keep-all; /* Prevent breaking in the middle of a word */
+  white-space: nowrap; /* Force single line */
+}
+
+h2 {
+    margin-top: 0;
+}
+
+p {
+  margin-top: 0px;
+  color: #000066;
+}
+
+
+
+/* New styles for SPA structure */
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.screen.active {
+    display: flex;
+}
+
+#result-screen {
+    background-image: url('images/BG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Start Screen Specifics */
+.form-group {
+    margin-bottom: 15px;
+    border: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #000066;
+    font-size: 1em;
+    text-align: center;
+}
+
+.options {
+    display: grid;
+    gap: 12px;
+}
+
+.age-options {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px; /* Reduced gap for single row */
+}
+
+.age-options .option {
+    padding: 10px 5px; /* Smaller padding for smaller buttons */
+    font-size: 0.8em; /* Smaller font size */
+}
+
+
+.gender-options {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.option-input {
+    display: none;
+}
+
+.option {
+    padding: 15px 10px;
+    border: 1px solid #777;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #000066;
+    font-size: 0.95em;
+    font-weight: 600;
+    text-align: center;
+}
+
+.option:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+    border-color: #aaa;
+}
+
+.option-input:checked + .option {
+    background-color: #0095ff;
+    color: white;
+    border-color: #0095ff;
+    box-shadow: 0 0 20px rgba(0, 149, 255, 0.6);
+    transform: translateY(-3px);
+}
+
+
+/* Quiz Screen Specifics */
+#quiz-screen {
+    color: #000066;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.quiz-header {
+    width: 90%;
+    max-width: 600px;
+    position: absolute;
+    top: 50px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#progress {
+    width: 0%;
+    height: 100%;
+    background-color: #2f80ed;
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+#question-text {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+    max-width: 600px;
+    line-height: 1.4;
+    color: #000066;
+}
+
+#answer-options {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
+    gap: 15px;
+}
+
+#answer-options button {
+    background-color: #E0F2F7;
+    color: #000066;
+    font-weight: 400;
+    border: 1px solid #B0D9E7;
+}
+
+#answer-options button:hover {
+    background: #e0e0e0;
+}
+.result-card {
+    background-color: rgba(255, 255, 255, 0.3); /* Significantly more translucent white background */
+    border-radius: 15px;
+    padding: 25px 20px;
+    margin-top: 20px; /* Space from top */
+    margin-bottom: 20px; /* Space from next section */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* Soft shadow */
+    width: 90%;
+    max-width: 400px; /* Max width for the card */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative; /* For potential absolute positioning of elements inside */
+}
+
+.result-text {
+    width: 100%;
+    padding: 0; /* Remove existing padding if any */
+    color: #000066; /* Ensure text color within the card is deep blue */
+}
+
+.result-intro {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #003f5c; /* Darker blue for intro text */
+    font-weight: 600;
+}
+
+#scent-name {
+    font-size: 1.4em; /* Make scent name more prominent */
+    font-weight: 700;
+    margin: 5px 0 15px;
+    color: #003f5c; /* Darker blue for scent name */
+}
+
+#scent-description {
+    line-height: 1.5;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    font-weight: 500;
+    max-width: 100%; /* Adjust to card width */
+    color: #333; /* Slightly softer color for description */
+    text-align: center;
+}
+
+/* Result Screen Content Override */
+#result-screen .content {
+  background: transparent; /* Keep transparent to show image */
+  color: #000066;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  flex-grow: 1;
+  justify-content: flex-start;
+  width: 100%;
+  align-items: center; /* Center children horizontally */
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+#start-screen .content {
+  justify-content: center;
+}
+
+#quiz-screen .content {
+  justify-content: center;
+  padding: 20px;
+}
+
+#result-screen .content {
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+#result-screen .content h2,
+#result-screen .content #scent-name {
+    color: #000066;
+}
+
+#result-screen .content #mbti-type {
+    font-size: 2em;
+    font-weight: 600;
+    color: #000066;
+}
+
+#scores-collapsible {
+    background-color: rgba(255, 255, 255, 0.7); /* Slightly lighter translucent background */
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px; /* Space from button */
+    margin-bottom: 25px; /* Space from next section */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Lighter shadow */
+    width: 90%;
+    max-width: 380px; /* Slightly smaller than main result card */
+    align-self: center; /* Center it */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+/* Result Screen Score Display */
+.scores-container {
+    margin-top: 0; /* Remove top margin as parent handles it */
+    width: 100%;
+    padding: 0 10px; /* Inner padding */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.scores-container h4 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #003f5c; /* Darker blue */
+    margin-bottom: 15px;
+    text-align: center; /* Center the heading */
+}
+
+.score-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+    font-size: 0.9em;
+}
+
+.dichotomy {
+    width: 60px;
+    font-weight: 600;
+}
+
+.score-bar-container {
+    flex-grow: 1;
+    height: 12px;
+    background-color: #e6e6e6; /* Lighter background for empty bar */
+    border-radius: 6px;
+    margin: 0 10px;
+}
+
+.score-bar {
+    height: 100%;
+    background-color: #007bff; /* A standard blue */
+    border-radius: 6px;
+    width: 0%; /* Will be set by JS */
+    transition: width 0.5s ease-in-out;
+}
+
+.score-value {
+    width: 40px;
+    text-align: right;
+    font-weight: 600;
+}
+
+/* Result Screen Visual Elements */
+.mbti-visual-container {
+    display: flex;
+    flex-direction: column; /* Stack image and text vertically */
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0 20px; /* Adjusted margin for better spacing */
+}
+
+#scent-symbol {
+    width: 120px; /* Make the symbol larger */
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 15px; /* Space between symbol and MBTI type */
+    filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.2)); /* Add a subtle shadow */
+}
+
+#result-screen .mbti-type-display {
+    margin: 0;
+    font-size: 2.8em; /* Make MBTI type larger and more prominent */
+    font-weight: 700;
+    color: #003f5c; /* Use the deep blue color */
+    line-height: 1.2; /* Adjust line height for better spacing */
+    letter-spacing: 2px; /* Add some letter spacing */
+}
+
+*:focus {
+    outline: none;
+}
+
+/* Unified Button Styles */
+.btn {
+    display: inline-block;
+    width: 100%;
+    margin: 5px 0;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Pretendard', sans-serif; /* Ensure consistent font */
+    font-size: 1em;
+    font-weight: 600;
+    line-height: 1.5; /* Ensure consistent vertical alignment */
+    text-align: center;
+    text-decoration: none; /* For <a> tags */
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #4CAF50; /* Unified green color */
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn:disabled,
+.btn.disabled { /* also add a class for <a> tags */
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Force font-family for all btn elements */
+button.btn,
+a.btn {
+    font-family: 'Pretendard', sans-serif;
+}
+
+/* New button style for the result screen */
+.btn-result {
+    display: inline-block;
+    width: auto;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #003f5c; /* Solid brand color background */
+    color: white; /* White text */
+    border: none; /* No border */
+    align-self: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-result:hover {
+    background-color: #005680; /* Darker brand color on hover */
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.btn-result:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Layout for result buttons */
+.result-buttons {
+    display: flex;
+    flex-direction: column; /* Stack vertically for better mobile view */
+    gap: 15px;
+    width: 90%; /* Match width of other cards */
+    max-width: 400px;
+    margin-top: 30px; /* More space */
+    align-self: center; /* Center it */
+    margin-bottom: 20px; /* Space from bottom of screen */
+}
+#start-btn {
+  margin-top: 50px;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 450px), (max-height: 750px) {
+  .logo {
+    width: 120px; /* Smaller logo */
+    margin-bottom: -10px;
+  }
+
+  .symbol-images {
+    margin-top: -45px; /* Reduce space above symbols */
+    gap: 5px; /* Reduce gap between symbols */
+    max-width: 320px; /* Ensure 4 items per row */
+  }
+
+  .symbol-item {
+    width: 70px; /* Adjust item width */
+  }
+
+  .symbol-images img {
+    width: 50px; /* Smaller symbol images */
+    height: 50px;
+  }
+
+  .symbol-label {
+    font-size: 11px; /* Slightly smaller text */
+  }
+
+  h1 {
+    font-size: 1.3em; /* Smaller heading */
+    margin-top: 15px; /* Reduce space */
+    margin-bottom: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 8px; /* Reduce space between form groups */
+  }
+
+  .option {
+    padding: 10px 8px;
+    font-size: 0.9em;
+  }
+
+  .age-options .option {
+    padding: 8px 4px;
+    font-size: 0.75em;
+  }
+
+  #start-btn {
+    margin-top: 10px; /* Bring start button up */
+    padding: 12px;
+  }
+}
+
+.memory-card-creator {
+    margin-top: 30px; /* More space from previous section */
+    padding: 20px;
+    border: none; /* Remove dashed border */
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.7); /* Similar to scores collapsible */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    align-self: center; /* Center it */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.memory-card-creator h3 {
+    color: #003f5c;
+    margin-bottom: 10px;
+}
+
+.memory-card-creator p {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#card-preview-container img {
+    max-width: 100%;
+    max-height: 350px; /* Constrain the height of the preview */
+    object-fit: contain;
+    border-radius: 10px;
+    margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Add shadow to image preview */
+}
+
+.purchase-info-box {
+    flex-grow: 1;
+    padding: 20px; /* More padding */
+    border-radius: 12px; /* More rounded corners */
+    border: none; /* Remove border */
+    background-color: rgba(0, 63, 92, 0.8); /* Darker blue, slightly translucent */
+    color: white; /* White text */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.purchase-info-box p {
+    margin: 0;
+    font-weight: 600;
+    color: white; /* White text for info box */
+    line-height: 1.5;
+    font-size: 1.1em;
+}
+
+.btn-secondary {
+    background-color: #007bff; /* Standard blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 10px 25px;
+    margin-top: 25px; /* Adjust margin from card */
+    width: auto;
+    align-self: center;
+    border-radius: 25px; /* More rounded */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-secondary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+
+
+
