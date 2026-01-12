@@ -519,6 +519,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // Add Naver Smart Store Link
+        const purchaseInfoBox = document.querySelector('.purchase-info-box');
+        if (purchaseInfoBox) {
+            // Clear existing content if any, then add the new link
+            purchaseInfoBox.innerHTML = '';
+            const purchaseLink = document.createElement('a');
+            purchaseLink.textContent = '구매하기';
+            purchaseLink.href = 'https://smartstore.naver.com/samjjemo'; // Actual Naver Smart Store Link
+            purchaseLink.target = '_blank'; // Open in new tab
+            purchaseLink.classList.add('purchase-link'); // Add a class for styling
+            purchaseInfoBox.appendChild(purchaseLink);
+        }
+
         // Calculate and display scores
         const dichotomyPairs = {
             E: ['E', 'I'], I: ['E', 'I'],
